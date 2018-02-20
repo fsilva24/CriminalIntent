@@ -21,6 +21,7 @@ public class CrimeLab {
         return sCrimeLab;
     }
 
+
     private CrimeLab(Context context){
         mCrimes  = new ArrayList<>();
         for (int i = 0; i < 100; i++){
@@ -38,6 +39,15 @@ public class CrimeLab {
     public Crime getCrime(UUID id){
         for (Crime crime : mCrimes) {
             if (crime.getId().equals(id)){
+                return crime;
+            }
+        }
+        return null;
+    }
+
+    public Crime getCrimeByTitle(String title){
+        for (Crime crime : mCrimes) {
+            if (crime.getTitle().equals(title)){
                 return crime;
             }
         }

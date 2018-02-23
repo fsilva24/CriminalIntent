@@ -25,6 +25,8 @@ public class CrimePagerActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private List<Crime> mCrimes;
+    private Button mStartButton;
+    private Button mEndButton;
 
 
     public static Intent newINtent (Context packageContext, UUID crimeId){
@@ -57,12 +59,23 @@ public class CrimePagerActivity extends AppCompatActivity {
             }
         });
 
-        for (int i = 0; i < mCrimes.size(); i++){
-            if (mCrimes.get(i).getId().equals(crimeId)){
-                mViewPager.setCurrentItem(i);
-                break;
+        mStartButton = (Button) findViewById(R.id.start_button);
+        mStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int numCrimes = mCrimes.size();
+                mViewPager.setCurrentItem(0);
             }
-        }
+        });
+        mEndButton = (Button) findViewById(R.id.end_button);
+        mEndButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                int numCrimes = mCrimes.size();
+                mViewPager.setCurrentItem(numCrimes-1);
+            }
+        });
+
     }
 }
 

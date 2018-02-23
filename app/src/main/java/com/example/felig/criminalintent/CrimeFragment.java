@@ -30,8 +30,7 @@ public class CrimeFragment extends Fragment {
     private Crime mCrime;
     private EditText mTitleField;
     private Button mDateButton;
-    private Button mStartButton;
-    private Button mEndButton;
+
     private CheckBox mSolvedCheckBox;
 
     public static CrimeFragment newInstance(UUID crimeId){
@@ -85,41 +84,7 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mStartButton = (Button) v.findViewById(R.id.start_button);
-        mStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int numCrimes = CrimeLab.get(getContext()).getCrimes().size();
-                for (int i = 0; i < numCrimes; i++){
-                    String title = ("Crime #" + i);
-                    Crime currCrime = CrimeLab.get(getContext()).getCrimeByTitle(title);
-                    if (currCrime.getTitle().equals("Crime #0")){
-                        Toast.makeText(getContext(), currCrime.getTitle(), Toast.LENGTH_SHORT).show();
-                        Intent intent = CrimePagerActivity.newINtent(getActivity(), currCrime.getId());
-                        startActivity(intent);
-                    }
-                }
-            }
-        });
-        mEndButton = (Button) v.findViewById(R.id.end_button);
-        mEndButton.setOnClickListener(new View.OnClickListener() {
-            @Override
 
-            public void onClick(View v){
-                int numCrimes = CrimeLab.get(getContext()).getCrimes().size();
-                for (int i = 0; i < numCrimes; i++){
-                    String title = ("Crime #" + i);
-                    String lastCrime = ("Crime #" + (numCrimes - 1));
-                    Crime currCrime = CrimeLab.get(getContext()).getCrimeByTitle(title);
-                    if (currCrime.getTitle().equals(lastCrime)){
-                        Toast.makeText(getContext(), currCrime.getTitle(), Toast.LENGTH_SHORT).show();
-                        Intent intent = CrimePagerActivity.newINtent(getActivity(), currCrime.getId());
-                        startActivity(intent);
-                    }
-                }
-
-            }
-        });
         return v;
     }
 }

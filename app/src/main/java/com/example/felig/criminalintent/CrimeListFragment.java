@@ -3,6 +3,7 @@ package com.example.felig.criminalintent;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 //import android.content.Intent;
@@ -28,6 +28,7 @@ public class CrimeListFragment extends Fragment {
     private Crime mCrime;
     private boolean mSubtitleVisible;
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+    private ViewPager mViewPager;
     /*
     private TextView mTitleTextView;
     private TextView mDateTextView;
@@ -61,7 +62,7 @@ public class CrimeListFragment extends Fragment {
     }
 
     @Override
-    public void onSavedInstanceState(Bundle outState) {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVED_SUBTITLE_VISIBLE, mSubtitleVisible);
     }
@@ -85,7 +86,7 @@ public class CrimeListFragment extends Fragment {
             case R.id.new_crime:
                 Crime crime = new Crime();
                 CrimeLab.get(getActivity()).addCrime(crime);
-                Intent intent = CrimePagerActivity.newINtent(getActivity(),crime.getId());
+                Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
                 startActivity(intent);
                 return true;
             case R.id.show_subtitle:
@@ -144,7 +145,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onClick(View view){
-            Intent intent = CrimePagerActivity.newINtent(getActivity(), mCrime.getId());
+            Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
             startActivity(intent);
         }
 

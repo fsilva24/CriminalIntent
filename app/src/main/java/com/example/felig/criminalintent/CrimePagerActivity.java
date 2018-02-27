@@ -15,6 +15,8 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.UUID;
 
+import static com.example.felig.criminalintent.R.menu.fragment_crime_list;
+
 /**
  * Created by felig on 2/19/2018.
  */
@@ -29,7 +31,7 @@ public class CrimePagerActivity extends AppCompatActivity {
     private Button mEndButton;
 
 
-    public static Intent newINtent (Context packageContext, UUID crimeId){
+    public static Intent newIntent(Context packageContext, UUID crimeId){
         Intent intent = new Intent(packageContext, CrimePagerActivity.class);
         intent.putExtra(EXTRA_CRIME_ID, crimeId);
         return intent;
@@ -77,5 +79,6 @@ public class CrimePagerActivity extends AppCompatActivity {
         });
 
     }
+
 }
 

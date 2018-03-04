@@ -12,6 +12,8 @@ public class Crime extends Object {
     private String mTitle;
     private Date mDate;
     private boolean mSolved;
+    private String mSuspect;
+    private String mPhone;
 
     public Crime() {
         mId = UUID.randomUUID();
@@ -38,4 +40,12 @@ public class Crime extends Object {
     public void setSolved(boolean solved) {
         mSolved = solved;
     }
+    public String getSuspect() {
+        return mSuspect;
+    }
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
+    }
+    public void setPhone(String phone) {mPhone = phone;}
+    public String getPhone(){return mPhone;}
 }

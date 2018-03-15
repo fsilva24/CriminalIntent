@@ -10,12 +10,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
-
-import static com.example.felig.criminalintent.R.menu.fragment_crime_list;
 
 /**
  * Created by felig on 2/19/2018.
@@ -26,7 +23,7 @@ public class CrimePagerActivity extends AppCompatActivity {
 
 
     private ViewPager mViewPager;
-    private List<Crime> mCrimes;
+    private List<Friend> mCrimes;
     private Button mStartButton;
     private Button mEndButton;
 
@@ -46,13 +43,13 @@ public class CrimePagerActivity extends AppCompatActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.crime_view_pager);
 
-        mCrimes = CrimeLab.get(this).getCrimes();
+        mCrimes = FriendLab.get(this).getCrimes();
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager){
             @Override
             public Fragment getItem(int position){
-                Crime crime = mCrimes.get(position);
-                return CrimeFragment.newInstance(crime.getId());
+                Friend crime = mCrimes.get(position);
+                return FriendFragment.newInstance(crime.getId());
             }
 
             @Override

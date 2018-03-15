@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -25,22 +23,19 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 
 
-
-import java.util.Date;
 import java.util.UUID;
-import java.util.Calendar;
 
 /**
  * Created by felig on 2/5/2018.
  */
 
-public class CrimeFragment extends Fragment {
+public class FriendFragment extends Fragment {
 
-    private static final String ARG_CRIME_ID = "crime_id";
+    private static final String ARG_FRIEND_ID = "crime_id";
 
-    private Crime mCrime;
-    private EditText mTitleField;
-    private Button mDateButton;
+    private Friend mFriend;
+    private EditText mFriendField;
+    private Button mBirthdayButton;
     private Button mReportButton;
     private CheckBox mSolvedCheckBox;
     private Button mSuspectButton;
@@ -50,51 +45,29 @@ public class CrimeFragment extends Fragment {
 
     private static final int REQUEST_DATE = 0;
 
-    public static CrimeFragment newInstance(UUID crimeId){
+    public static FriendFragment newInstance(UUID friendId){
         Bundle args = new Bundle();
-        args.putSerializable(ARG_CRIME_ID, crimeId);
+        args.putSerializable(ARG_FRIEND_ID, friendId);
 
-        CrimeFragment fragment = new CrimeFragment();
+        FriendFragment fragment = new FriendFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-
-    private String getCrimeReport() {
-        String solvedString = null;
-        if (mCrime.isSolved()) {
-            solvedString = getString(R.string.crime_report_solved);
-        } else {
-            solvedString = getString(R.string.crime_report_unsolved);
-        }
-        String dateFormat = "EEE, MMM dd";
-        String dateString = DateFormat.format(dateFormat,
-                mCrime.getDate()).toString();
-        String suspect = mCrime.getSuspect();
-        if (suspect == null) {
-            suspect = getString(R.string.crime_report_no_suspect);
-        } else {
-            suspect = getString(R.string.crime_report_suspect, suspect);
-        }
-        String report = getString(R.string.crime_report,
-                mCrime.getTitle(), dateString, solvedString, suspect);
-        return report;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID crimeId = (UUID) getArguments().getSerializable(ARG_CRIME_ID);
-        mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
+        UUID friendId = (UUID) getArguments().getSerializable(ARG_FRIEND_ID);
+        mFriend = FriendLab.get(getActivity()).getFriend(friendId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_crime, container, false);
+        View v = inflater.inflate(R.layout.fragment_friend, container, false);
 
-        mTitleField = (EditText) v.findViewById(R.id.crime_title);
-        mTitleField.setText(mCrime.getTitle());
-        mTitleField.addTextChangedListener(new TextWatcher() {
+        mFriendField = (EditText) v.findViewById(R.id.crime_title);
+        mFriendField.setText(mFriend.getName());
+        mFriendField.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(
                     CharSequence s, int start, int count, int after) {
@@ -103,7 +76,7 @@ public class CrimeFragment extends Fragment {
             @Override
             public void onTextChanged(
                     CharSequence s, int start, int before, int count) {
-                mCrime.setTitle(s.toString());
+                mFriend.setTitle(s.toString());
             }
             @Override
             public void afterTextChanged(Editable s) {
@@ -111,16 +84,16 @@ public class CrimeFragment extends Fragment {
             }
         });
 
-        mDateButton = (Button) v.findViewById(R.id.crime_date);
-        mDateButton.setText(mCrime.getDate().toString());
-        mDateButton.setEnabled(false);
+        mBirthdayButton = (Button) v.findViewById(R.id.crime_date);
+        mBirthdayButton.setText(mFriend.getDate().toString());
+        mBirthdayButton.setEnabled(false);
 
         mSolvedCheckBox = (CheckBox)v.findViewById(R.id.crime_solved);
-        mSolvedCheckBox.setChecked(mCrime.isSolved());
+        mSolvedCheckBox.setChecked(mFriend.isSolved());
         mSolvedCheckBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mCrime.setSolved(isChecked);
+                mFriend.setSolved(isChecked);
             }
         });
 
@@ -145,8 +118,8 @@ public class CrimeFragment extends Fragment {
                 startActivityForResult(pickContact, REQUEST_CONTACT);
             }
         });
-        if (mCrime.getSuspect() != null) {
-            mSuspectButton.setText(mCrime.getSuspect());
+        if (mFriend.getSuspect() != null) {
+            mSuspectButton.setText(mFriend.getSuspect());
         }
 
 
@@ -154,7 +127,7 @@ public class CrimeFragment extends Fragment {
         mCallSuspectButton = (Button) v.findViewById(R.id.call_suspect);
         mCallSuspectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Uri number = Uri.parse("tel:"+mCrime.getPhone());  // the “tel:” is needed to start activity
+                Uri number = Uri.parse("tel:"+mFriend.getPhone());  // the “tel:” is needed to start activity
                 mCallSuspectButton.setText(number.toString());
 
                 callContact.setData(number);
@@ -202,7 +175,7 @@ public class CrimeFragment extends Fragment {
 // that is your suspect's name
                 c.moveToFirst();
                 String suspect = c.getString(0);
-                mCrime.setSuspect(suspect);
+                mFriend.setSuspect(suspect);
                 mSuspectButton.setText(suspect);
                 mSuspectID = c.getString(1);
                 updateSuspectPhone();
@@ -254,10 +227,10 @@ public class CrimeFragment extends Fragment {
 
     private void updateSuspectPhone () {
         String suspectPhoneNumber = getSuspectPhoneNumber(mSuspectID);
-        mCrime.setPhone(suspectPhoneNumber);
+        mFriend.setPhone(suspectPhoneNumber);
     }
 
     private void updateDate() {
-        mDateButton.setText(mCrime.getDate().toString());
+        mBirthdayButton.setText(mFriend.getDate().toString());
     }
 }

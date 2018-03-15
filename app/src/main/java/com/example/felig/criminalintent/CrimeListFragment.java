@@ -25,7 +25,7 @@ import java.util.List;
 public class CrimeListFragment extends Fragment {
     private RecyclerView mCrimeRecyclerView;
     private CrimeAdapter mAdapter;
-    private Crime mCrime;
+    private Friend mCrime;
     private boolean mSubtitleVisible;
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
     private ViewPager mViewPager;
@@ -84,8 +84,8 @@ public class CrimeListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.new_crime:
-                Crime crime = new Crime();
-                CrimeLab.get(getActivity()).addCrime(crime);
+                Friend crime = new Friend();
+                FriendLab.get(getActivity()).addCrime(crime);
                 Intent intent = CrimePagerActivity.newIntent(getActivity(), crime.getId());
                 startActivity(intent);
                 return true;
@@ -100,7 +100,7 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateSubtitle(){
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
+        FriendLab crimeLab = FriendLab.get(getActivity());
         int crimeCount = crimeLab.getCrimes().size();
         String subtitle = getString(R.string.subtitle_format, crimeCount);
 
@@ -113,8 +113,8 @@ public class CrimeListFragment extends Fragment {
     }
 
     private void updateUI () {
-        CrimeLab crimeLab = CrimeLab.get(getActivity());
-        List<Crime> crimes = crimeLab.getCrimes();
+        FriendLab crimeLab = FriendLab.get(getActivity());
+        List<Friend> crimes = crimeLab.getCrimes();
 
         if (mAdapter == null) {
             mAdapter = new CrimeAdapter(crimes);
@@ -126,7 +126,7 @@ public class CrimeListFragment extends Fragment {
     }
     private class CrimeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private Crime mCrime;
+        private Friend mCrime;
         private TextView mTitleTextView;
         private TextView mDateTextView;
 
@@ -137,7 +137,7 @@ public class CrimeListFragment extends Fragment {
             mDateTextView = (TextView) itemView.findViewById(R.id.crime_date);
         }
 
-        public void bind(Crime crime){
+        public void bind(Friend crime){
             mCrime = crime;
             mTitleTextView.setText(mCrime.getTitle());
             mDateTextView.setText(mCrime.getDate().toString());
@@ -152,9 +152,9 @@ public class CrimeListFragment extends Fragment {
     }
 
     private class CrimeAdapter extends RecyclerView.Adapter<CrimeHolder> {
-        private List<Crime> mCrimes;
+        private List<Friend> mCrimes;
 
-        public CrimeAdapter(List<Crime> crimes){
+        public CrimeAdapter(List<Friend> crimes){
             mCrimes = crimes;
         }
 
@@ -166,7 +166,7 @@ public class CrimeListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(CrimeHolder holder, int position){
-            Crime crime = mCrimes.get(position);
+            Friend crime = mCrimes.get(position);
             holder.bind(crime);
         }
 
